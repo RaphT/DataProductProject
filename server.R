@@ -3,37 +3,29 @@ library(shiny)
 # Define server logic required to generate and plot a random distribution
 shinyServer(function(input, output,session) {
   
-  # Expression that generates a plot of the distribution. The expression
-  # is wrapped in a call to renderPlot to indicate that:
-  #
-  #  1) It is "reactive" and therefore should be automatically 
-  #     re-executed when inputs change
-  #  2) Its output type is a plot 
-  #
-  dist <- reactive({
-    val <- input$param
-    if(val == "Alternative"){
-      alpha = input$alpha*input$beta
-      beta = input$beta * (1- input$alpha)
-      rbeta(input$obs, alpha, beta)
-    } else {
-      rbeta(input$obs, input$alpha, input$beta)
-    }
-  })
-  
-  observe({
-    val <- input$param
-    if(val == "Alternative"){
-      updateSliderInput(session, "alpha", label = "mu",min = 0, max = 1)
-      updateSliderInput(session, "beta", label = "phi", min = 1, max = 100)
-    } else {
-      updateSliderInput(session, "alpha", label = "alpha", min = 0, max = 100)
-      updateSliderInput(session, "beta", label = "beta", min = 0, max = 100)
-    }
-  })
+ 
+dist <- reactive({
+  val <- input$param
+  if(val == "Alternative"){
+    alpha = input$mu*input$phi
+    beta = input$phi * (1- input$mu)
+    updateSliderInput(session, "alpha", label = "alpha", value = alpha)
+    updateSliderInput(session, "beta", label = "beta", value= beta)
+  } else {
+    alpha = input$alpha
+    beta = input$beta
+    mu = alpha/(alpha+beta)
+    phi = alpha + beta
+    updateSliderInput(session, "mu", label = "mu", value = mu)
+    updateSliderInput(session, "phi", label = "phi", value = phi)  
+  }
+#   print(alpha)
+#   print(beta)
+  rbeta(input$obs, alpha, beta)
+})
 
   output$distPlot <- renderPlot({
-    hist(dist(), breaks = input$obs/100)
+     hist(dist(), breaks = input$obs/100)
   })
   output$summary <- renderPrint({
       summary(dist())
