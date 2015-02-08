@@ -16,19 +16,22 @@ shinyUI(pageWithSidebar(
     sliderInput("beta", label = "Beta:",
                 min = 0.5, max = 100, value = c(1),step= 0.05),
     sliderInput("mu", label = "Mu:",
-                min = 0, max = 100, value = c(1),step= 0.05),
+                min = 0, max = 1, value = c(0.5),step= 0.05),
     sliderInput("phi", label = "Phi:",
-                min = 0, max = 100, value = c(1),step= 0.05),
+                min = 0, max = 200, value = c(2),step= 0.05),
     sliderInput("obs", label = "Number of observations:", 
                 min = 1,
-                max = 10000, 
-                value = 5000)
+                max = 1000, 
+                value = 500)
   ),
   
   
   # Show a plot of the generated distribution
   mainPanel(
     plotOutput("distPlot"),
-    verbatimTextOutput("summary")
-  )
+    verbatimTextOutput("summary"),
+    textOutput("Alpha"),
+    textOutput(""),
+    textOutput(""),
+    textOutput(""))
 ))
