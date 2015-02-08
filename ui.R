@@ -1,4 +1,5 @@
 library(shiny)
+require(markdown)
 
 shinyUI(fluidPage(
   title = "Beta distribution Explorer",
