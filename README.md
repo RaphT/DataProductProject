@@ -8,6 +8,7 @@ In order to model such a variable, beta regression may be used with for instance
 **Application structure**
 
 The application essentially does two things:
+
 1. It simulates a beta distribution sample with parameters input by the user;
 2. It calculates an estimate of these parameters *via* the betareg function.
 
